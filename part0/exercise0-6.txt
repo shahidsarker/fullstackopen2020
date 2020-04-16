@@ -17,3 +17,18 @@ note over browser:
 browser executes the event handler
 that renders notes to display
 end note
+
+note over browser:
+user types a new note
+user hits save button
+end note
+
+note over browser:
+event handler takes form input
+adds new note to notes list
+clears input form
+renders updated notes list
+end note
+
+browser->server: HTTP POST http://fullstack-exampleapp.herokuapp.com/new_note_spa
+server-->browser: HTTP 201 Status Code [{"message":"note created"}]
