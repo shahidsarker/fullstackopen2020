@@ -4,7 +4,15 @@ import ReactDOM from "react-dom";
 const App = (props) => {
   const [selected, setSelected] = useState(0);
 
-  return <div>{props.anecdotes[selected]}</div>;
+  const handleNext = () => {
+    setSelected(randomIndex(anecdotes.length));
+  };
+  return (
+    <div>
+      <p>{props.anecdotes[selected]}</p>
+      <button onClick={handleNext}>next anecdote</button>
+    </div>
+  );
 };
 
 const anecdotes = [
@@ -15,5 +23,7 @@ const anecdotes = [
   "Premature optimization is the root of all evil.",
   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
 ];
+
+const randomIndex = (length) => Math.floor(Math.random() * Math.floor(length));
 
 ReactDOM.render(<App anecdotes={anecdotes} />, document.getElementById("root"));
