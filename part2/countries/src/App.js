@@ -18,7 +18,7 @@ const Country = ({ country }) => (
         return <li key={language.iso639_2}>{language.name}</li>;
       })}
     </ul>
-    <img src={country.flag} alt={"Flag of " + country.name} />
+    <img src={country.flag} alt={"Flag of " + country.name} width="500" />
   </div>
 );
 
@@ -28,16 +28,30 @@ const CountryList = ({ countries }) => {
   ));
 };
 
+const Display = ({ results, filter }) => {
+  if (filter === "") return "Please type a query";
+  // if (results.length === 0) return "please try a different input";
+
+  if (results.length > 10) return "too many matches, specify another filter";
+  else if (results.length === 1) return <Country country={results[0]} />;
+  else return <CountryList countries={results} />;
+};
+
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState("");
+  const [results, setResults] = useState([]);
 
   const countriesHook = () => {
     console.log("effect");
-    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
-      setCountries(response.data);
-      console.log(response.data.length);
-    });
+    axios
+      .get(
+        "https://restcountries.eu/rest/v2/all?fields=name;capital;population;languages;flag"
+      )
+      .then((response) => {
+        setCountries(response.data);
+        console.log(response.data.length);
+      });
   };
 
   useEffect(countriesHook, []);
@@ -46,24 +60,26 @@ const App = () => {
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
+
+    // if (filter !== "") {
+    const newResults = countries.filter((country) => {
+      return country.name.toLowerCase().includes(e.target.value);
+    });
+    setResults(newResults);
+    // } else setResults([]);
   };
 
-  let display = "Please type a query";
-  let results = [];
-  if (filter !== "") {
-    results = countries.filter((country) => {
-      return country.name.toLowerCase().includes(filter);
-    });
-  }
-  if (results.length > 10) display = "too many matches, specify another filter";
-  else if (results.length === 1) display = <Country country={results[0]} />;
-  else display = <CountryList countries={results} />;
+  // let display = "Please type a query";
+
+  // if (results.length > 10) display = "too many matches, specify another filter";
+  // else if (results.length === 1) display = <Country country={results[0]} />;
+  // else display = <CountryList countries={results} />;
 
   return (
     <div>
       <h2>Countries</h2>
       <Filter value={filter} onChange={handleFilter} />
-      <div>{display}</div>
+      <Display results={results} filter={filter} />
     </div>
   );
 };
