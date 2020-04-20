@@ -40,6 +40,19 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleDelete = (person) => {
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      personsService
+        .remove(person.id)
+        .then((response) => {
+          setPersons(persons.filter((p) => p.id !== person.id));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   const handleNameChange = (e) => {
     setNewName(e.target.value);
   };
@@ -76,7 +89,7 @@ const App = () => {
           {person.name} {person.number}
         </p>
       ))} */}
-      <Persons persons={displayPersons} />
+      <Persons persons={displayPersons} onDelete={handleDelete} />
 
       <code>
         <hr />
