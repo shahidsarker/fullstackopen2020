@@ -22,19 +22,21 @@ const Country = ({ country }) => (
   </div>
 );
 
-const CountryList = ({ countries }) => {
+const CountryList = ({ countries, onClick }) => {
   return countries.map((country) => (
-    <div key={country.name}>{country.name}</div>
+    <div key={country.name}>
+      {country.name} <button onClick={() => onClick(country)}>show</button>
+    </div>
   ));
 };
 
-const Display = ({ results, filter }) => {
+const Display = ({ results, filter, onCountryClick }) => {
   if (filter === "") return "Please type a query";
   // if (results.length === 0) return "please try a different input";
 
   if (results.length > 10) return "too many matches, specify another filter";
   else if (results.length === 1) return <Country country={results[0]} />;
-  else return <CountryList countries={results} />;
+  else return <CountryList countries={results} onClick={onCountryClick} />;
 };
 
 const App = () => {
@@ -68,18 +70,19 @@ const App = () => {
     setResults(newResults);
     // } else setResults([]);
   };
-
-  // let display = "Please type a query";
-
-  // if (results.length > 10) display = "too many matches, specify another filter";
-  // else if (results.length === 1) display = <Country country={results[0]} />;
-  // else display = <CountryList countries={results} />;
+  const handleCountryClick = (country) => {
+    setResults([country]);
+  };
 
   return (
     <div>
       <h2>Countries</h2>
       <Filter value={filter} onChange={handleFilter} />
-      <Display results={results} filter={filter} />
+      <Display
+        results={results}
+        filter={filter}
+        onCountryClick={handleCountryClick}
+      />
     </div>
   );
 };
