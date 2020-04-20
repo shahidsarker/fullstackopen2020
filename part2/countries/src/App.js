@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const Filter = ({ filter, onChange }) => (
+  <div>
+    find countries <input value={filter} onChange={onChange} />
+  </div>
+);
+
 const Country = ({ country }) => (
   <div>
     <h1>{country.name}</h1>
@@ -56,7 +62,7 @@ const App = () => {
   return (
     <div>
       <h2>Countries</h2>
-      find countries <input value={filter} onChange={handleFilter} />
+      <Filter value={filter} onChange={handleFilter} />
       <div>{display}</div>
     </div>
   );
