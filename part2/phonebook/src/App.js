@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "8675309" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -12,14 +15,17 @@ const App = () => {
       return alert(newName + " is already in phonebook");
     }
 
-    const personObj = { name: newName };
+    const personObj = { name: newName, number: newNumber };
     setPersons(persons.concat(personObj));
     setNewName("");
+    setNewNumber("");
   };
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
   };
+
+  const handleNumberChange = (e) => setNewNumber(e.target.value);
 
   return (
     <div>
@@ -27,6 +33,9 @@ const App = () => {
       <form>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
           <button type="submit" onClick={handleAdd}>
@@ -37,10 +46,17 @@ const App = () => {
       <h2>Numbers</h2>
 
       {persons.map((person) => (
-        <p key={person.name}>{person.name}</p>
+        <p key={person.name}>
+          {person.name} {person.number}
+        </p>
       ))}
 
-      <div>debug: {newName}</div>
+      <code>
+        <hr />
+        debug:
+        <div>newName:{newName}</div>
+        <div>newNumber: {newNumber}</div>
+      </code>
     </div>
   );
 };
