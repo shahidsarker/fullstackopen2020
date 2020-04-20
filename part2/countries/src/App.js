@@ -1,11 +1,58 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const weather_api_key = process.env.REACT_APP_WEATHER_API_KEY;
+
 const Filter = ({ filter, onChange }) => (
   <div>
     find countries <input value={filter} onChange={onChange} />
   </div>
 );
+
+const Weather = (props) => {
+  const [weather, setWeather] = useState({});
+
+  const params = {
+    access_key: weather_api_key,
+    query: props.capital,
+  };
+  const weatherHook = () => {
+    axios
+      .get("http://api.weatherstack.com/current", { params })
+      .then((response) => {
+        setWeather(response.data.current);
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(weatherHook, []);
+
+  let weatherDisplay;
+  if (weather) {
+    weatherDisplay = (
+      <div>
+        <div>
+          <strong>temperature:</strong>
+          {console.log("temp", weather.temperature)}
+          {weather.temperature}
+        </div>
+        <img src={weather.weather_icons} alt="" />
+        <div>
+          <strong>wind:</strong>
+          {weather.wind_speed} kph / direction {weather.wind_dir}
+        </div>
+      </div>
+    );
+  } else {
+    weatherDisplay = "Loading weather...";
+  }
+
+  return (
+    <div>
+      <h4>Weather in {props.capital}</h4>
+      {weatherDisplay}
+    </div>
+  );
+};
 
 const Country = ({ country }) => (
   <div>
@@ -18,7 +65,8 @@ const Country = ({ country }) => (
         return <li key={language.iso639_2}>{language.name}</li>;
       })}
     </ul>
-    <img src={country.flag} alt={"Flag of " + country.name} width="500" />
+    <img src={country.flag} alt={"Flag of " + country.name} height="200" />
+    <Weather capital={country.capital} />
   </div>
 );
 
@@ -53,7 +101,8 @@ const App = () => {
       .then((response) => {
         setCountries(response.data);
         console.log(response.data.length);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(countriesHook, []);
