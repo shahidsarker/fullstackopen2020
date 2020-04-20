@@ -25,7 +25,23 @@ const App = () => {
 
     // Check if name is already in phonebook
     if (persons.find((person) => person.name === newName)) {
-      return alert(newName + " is already in phonebook");
+      if (
+        window.confirm(
+          `${newName} is already in phonebook, replace with new number?`
+        )
+      ) {
+        const person = persons.find((p) => p.name === newName);
+        const updatedPerson = { ...person, number: newNumber };
+        return personsService
+          .update(person.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+          });
+      }
     }
 
     const personObj = { name: newName, number: newNumber };
@@ -33,7 +49,6 @@ const App = () => {
       .create(personObj)
       .then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-
         setNewName("");
         setNewNumber("");
       })
