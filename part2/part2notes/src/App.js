@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 import Note from "./components/Note";
 import noteService from "./services/notes";
@@ -10,9 +9,9 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    noteService.getAll().then((response) => {
+    noteService.getAll().then((initialNotes) => {
       console.log("promise fulfilled");
-      setNotes(response.data);
+      setNotes(initialNotes);
     });
   }, []);
 
@@ -20,8 +19,8 @@ const App = () => {
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
 
-    noteService.update(id, changedNote).then((response) => {
-      setNotes(notes.map((note) => (note.id !== id ? note : response.data)));
+    noteService.update(id, changedNote).then((returnedNote) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     });
   };
 
@@ -36,8 +35,8 @@ const App = () => {
 
     noteService
       .create(noteObject)
-      .then((response) => {
-        setNotes(notes.concat(response.data));
+      .then((returnedNote) => {
+        setNotes(notes.concat(returnedNote));
         setNewNote("");
       })
       .catch((err) => console.log(err));
