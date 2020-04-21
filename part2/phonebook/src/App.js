@@ -17,9 +17,12 @@ const App = () => {
 
   const hook = () => {
     console.log("effect");
-    personsService.getAll().then((initialPersons) => {
-      setPersons(initialPersons);
-    });
+    personsService
+      .getAll()
+      .then((initialPersons) => {
+        setPersons(initialPersons);
+      })
+      .catch((err) => console.log(err));
   };
   useEffect(hook, []);
 
@@ -68,9 +71,23 @@ const App = () => {
         .remove(person.id)
         .then((response) => {
           setPersons(persons.filter((p) => p.id !== person.id));
+          setMessage({
+            text: `${person.name} has been removed`,
+            type: "success",
+          });
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         })
         .catch((err) => {
           console.log(err);
+          setMessage({
+            text: `${person.name} has already been removed from the server`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
     }
   };
