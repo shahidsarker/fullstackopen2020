@@ -6,11 +6,14 @@ import Persons from "./components/Persons";
 
 import personsService from "./services/persons";
 
+import Notification from "./components/Notification";
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState(null);
 
   const hook = () => {
     console.log("effect");
@@ -51,6 +54,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
+        setMessage({ text: `Added ${returnedPerson.name}`, type: "success" });
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch((err) => console.log(err));
   };
@@ -86,6 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter value={filter} onChange={handleFilterChange} />
 
       <h3>Add a new person</h3>
