@@ -22,7 +22,7 @@ h6 {
 }
 
 .success {
-  color: green;
+  color: #28a745;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
@@ -33,6 +33,16 @@ h6 {
 
 .error {
   color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.warning {
+  color: #ffc107;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;

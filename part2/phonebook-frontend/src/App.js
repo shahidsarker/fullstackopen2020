@@ -46,6 +46,15 @@ const App = () => {
                 person.id !== returnedPerson.id ? person : returnedPerson
               )
             );
+            setNewName("");
+            setNewNumber("");
+            setMessage({
+              text: `Updated ${returnedPerson.name}`,
+              type: "success",
+            });
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
           });
       }
     }
@@ -73,7 +82,7 @@ const App = () => {
           setPersons(persons.filter((p) => p.id !== person.id));
           setMessage({
             text: `${person.name} has been removed`,
-            type: "success",
+            type: "warning",
           });
           setTimeout(() => {
             setMessage(null);
