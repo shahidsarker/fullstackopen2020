@@ -71,7 +71,11 @@ const App = () => {
           setMessage(null);
         }, 5000);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response.data);
+        const { error: text } = err.response.data;
+        setMessage({ text, type: "error" });
+      });
   };
 
   const handleDelete = (person) => {
@@ -133,11 +137,6 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      {/* {displayPersons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ))} */}
       <Persons persons={displayPersons} onDelete={handleDelete} />
 
       <code>
