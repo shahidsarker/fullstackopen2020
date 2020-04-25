@@ -16,7 +16,6 @@ const App = () => {
   const [message, setMessage] = useState(null);
 
   const hook = () => {
-    console.log("effect");
     personsService
       .getAll()
       .then((initialPersons) => {
@@ -72,7 +71,6 @@ const App = () => {
         }, 5000);
       })
       .catch((err) => {
-        console.log(err.response.data);
         const { error: text } = err.response.data;
         setMessage({ text, type: "error" });
       });
