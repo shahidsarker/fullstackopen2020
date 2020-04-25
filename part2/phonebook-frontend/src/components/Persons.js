@@ -12,7 +12,7 @@ const Persons = (props) => {
 
   return props.persons.map((person) => (
     <Person
-      key={person.name}
+      key={person.id}
       person={person}
       onDelete={() => props.onDelete(person)}
     />
